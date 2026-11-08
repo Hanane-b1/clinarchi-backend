@@ -1,34 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Api\ProjectController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/departments', function () {
-    return response()->json(
-        DB::table('departments')->get()
-    );
-});
-Route::get('/php-check', function () {
-    return response()->json([
-        'php_version' => phpversion(),
-        'pdo_pgsql_loaded' => extension_loaded('pdo_pgsql'),
-        'pgsql_loaded' => extension_loaded('pgsql'),
-        'loaded_ini' => php_ini_loaded_file(),
-    ]);
-});
-Route::get('/debug-php', function () {
-    return [
-        'ini' => php_ini_loaded_file(),
-        'extensions' => get_loaded_extensions(),
-    ];
-});
-
-Route::get('/test', function () {
-    return response()->json([
-        "message" => "API marche 🔥"
-    ]);
+    return response()->json(DB::table('departments')->get());
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -36,30 +15,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('projects', ProjectController::class);
-Route::post('/generate-report', function (Illuminate\Http\Request $request) {
-    $response = \Illuminate\Support\Facades\Http::withHeaders([
+
+// Proxies report generation to the Claude API so the key stays on the server.
+Route::post('/generate-report', function (Request $request) {
+    $response = Http::withHeaders([
         'x-api-key' => env('ANTHROPIC_API_KEY'),
         'anthropic-version' => '2023-06-01',
         'content-type' => 'application/json',
     ])->post('https://api.anthropic.com/v1/messages', $request->all());
 
     return response()->json($response->json());
-    Route::post('/generate-report', function (Illuminate\Http\Request $request) {
-    $response = \Illuminate\Support\Facades\Http::withHeaders([
-        'x-api-key' => env('ANTHROPIC_API_KEY'),
-        'anthropic-version' => '2023-06-01',
-        'content-type' => 'application/json',
-    ])->post('https://api.anthropic.com/v1/messages', $request->all());
-
-    return response()->json($response->json());
-});
-Route::post('/generate-report', function (Illuminate\Http\Request $request) {
-    $response = \Illuminate\Support\Facades\Http::withHeaders([
-        'x-api-key' => env('ANTHROPIC_API_KEY'),
-        'anthropic-version' => '2023-06-01',
-        'content-type' => 'application/json',
-    ])->post('https://api.anthropic.com/v1/messages', $request->all());
-
-    return response()->json($response->json());
-});
 });
