@@ -1,33 +1,28 @@
-# 🏥 ClinArchi — Backend API
+# ClinArchi · API
 
-REST API for **ClinArchi**, an AI-assisted spatial programming platform for hospitals and clinics.
-It stores generated projects and securely proxies AI report generation to the Claude API, so the API key never reaches the browser.
+API REST de ClinArchi, plateforme de programmation architecturale pour cliniques et hôpitaux. Elle enregistre les projets générés et rédige le rapport fonctionnel par intelligence artificielle, sans jamais exposer la clé d'API au navigateur.
 
-> Built during my Full Stack Developer internship at **Groupe Vitalys Santé** (March – April 2026).
-> Frontend: [clinarchi-frontend](https://github.com/Hanane-b1/clinarchi-frontend)
+Projet réalisé pendant mon stage de développeuse full stack chez Groupe Vitalys Santé (mars à avril 2026). L'interface se trouve dans [clinarchi-frontend](https://github.com/Hanane-b1/clinarchi-frontend).
 
-## 🛠️ Tech stack
+## Fonctionnalités
 
-- **Laravel 10** (PHP 8.1+), Laravel Sanctum
-- **PostgreSQL** (MySQL also works locally)
-- **Claude API** (Anthropic) via Laravel HTTP client
-- **Docker** — Dockerfile ready for deployment on Render
-
-## 🔌 API endpoints
-
-| Method | Endpoint | Description |
+| Méthode | Route | Rôle |
 |---|---|---|
-| `GET` | `/api/projects` | List saved projects |
-| `POST` | `/api/projects` | Save a generated project (summary, floors, departments, report) |
-| `GET` | `/api/projects/{id}` | Get one project |
-| `PUT` | `/api/projects/{id}` | Update a project |
-| `DELETE` | `/api/projects/{id}` | Delete a project |
-| `GET` | `/api/departments` | List department types |
-| `POST` | `/api/generate-report` | Generate the functional report with Claude |
+| `GET` | `/api/projects` | Lister les projets enregistrés |
+| `POST` | `/api/projects` | Enregistrer un projet généré |
+| `GET` | `/api/projects/{id}` | Consulter un projet |
+| `PUT` | `/api/projects/{id}` | Modifier un projet |
+| `DELETE` | `/api/projects/{id}` | Supprimer un projet |
+| `GET` | `/api/departments` | Lister les types de départements |
+| `POST` | `/api/generate-report` | Générer le rapport fonctionnel par IA |
 
-## 🚀 Getting started
+## Technologies
 
-**Prerequisites:** PHP 8.1+, Composer, PostgreSQL or MySQL.
+Laravel 10 (PHP 8.1), Laravel Sanctum, PostgreSQL, API d'IA générative, Docker
+
+## Installation
+
+Prérequis : PHP 8.1+, Composer, PostgreSQL ou MySQL.
 
 ```bash
 git clone https://github.com/Hanane-b1/clinarchi-backend.git
@@ -37,7 +32,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Set your database and Anthropic key in `.env`:
+Renseigner la base de données et la clé d'API dans `.env` :
 
 ```env
 DB_CONNECTION=pgsql
@@ -47,25 +42,25 @@ DB_DATABASE=clinarchi
 DB_USERNAME=postgres
 DB_PASSWORD=
 
-ANTHROPIC_API_KEY=your-key-here
+ANTHROPIC_API_KEY=
 ```
 
-Then run the migrations and start the server:
+Puis lancer les migrations et le serveur :
 
 ```bash
 php artisan migrate
 php artisan serve
 ```
 
-The API runs on http://localhost:8000. A full PostgreSQL schema is also available in `ClinArchi.sql`.
+L'API est disponible sur http://localhost:8000. Le schéma PostgreSQL complet est fourni dans `ClinArchi.sql`.
 
-### With Docker
+### Avec Docker
 
 ```bash
 docker build -t clinarchi-backend .
 docker run -p 8000:8000 -e PORT=8000 --env-file .env clinarchi-backend
 ```
 
-## 👩‍💻 Author
+## Auteur
 
-**Hanane Belhadi** — Full Stack Developer · [GitHub](https://github.com/Hanane-b1)
+Hanane Belhadi
